@@ -14,10 +14,14 @@ const log = async (ctx:Koa.Context, next:Function) => {
 
 app.use(log)
 
+app.on('error', (error:Error, ctx:Koa.Context) => {
+	ctx.throw(500, 'server error')
+	console.log('server error:', error.message)
+})
+
 app.use(async function(ctx: Koa.Context) {
 	ctx.body = `${app.env}`
 })
-
 
 const server = app.listen(3000)
 server.timeout = timeout
